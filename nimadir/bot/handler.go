@@ -212,24 +212,42 @@ func deleteMessage(bot *tgbotapi.BotAPI, chatID int64, messageID int) {
 }
 
 func clearAllData() error {
-	err1 := os.Remove("cargo.json")
-	err2 := os.Remove("expense.json")
-	err3 := os.RemoveAll("charts")
-	err4 := os.RemoveAll("pdfs")
+	err1 := os.WriteFile("data/cargo.json", []byte("[]"), 0644)
+	err2 := os.WriteFile("data/expense.json", []byte("[]"), 0644)
 
-	if err1 != nil && !os.IsNotExist(err1) {
+	err3 := clearDirectory("data/charts")
+	err4 := clearDirectory("data/pdfs")
+
+	if err1 != nil {
 		return err1
 	}
-	if err2 != nil && !os.IsNotExist(err2) {
+	if err2 != nil {
 		return err2
 	}
-	if err3 != nil && !os.IsNotExist(err3) {
+	if err3 != nil {
 		return err3
 	}
-	if err4 != nil && !os.IsNotExist(err4) {
+	if err4 != nil {
 		return err4
 	}
 
+	return nil
+}
+
+func clearDirectory(path string) error {
+	entries, err := os.ReadDir(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return err
+	}
+	for _, entry := range entries {
+		err := os.RemoveAll(path + "/" + entry.Name())
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
