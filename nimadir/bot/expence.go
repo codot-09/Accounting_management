@@ -57,7 +57,7 @@ func saveExpense(chatID int64, message *tgbotapi.Message, bot *tgbotapi.BotAPI) 
 
 		bot.Send(tgbotapi.NewMessage(chatID, "✅ Chiqim muvaffaqiyatli saqlandi!"))
 
-		adminChatID := int64(7193645528)
+		adminChatID := int64(320404178)
 		notificationText := fmt.Sprintf(
 			"📥 *Yangi chiqim!*\n\n👤 Ism: %s\n📞 Tel: %s\n💰 Summa: %d so'm\n📅 Sana: %s",
 			e.Contact, e.Phone, e.Amount, e.Date,
